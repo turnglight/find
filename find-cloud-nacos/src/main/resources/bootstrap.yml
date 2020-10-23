@@ -3,6 +3,8 @@ spring:
     name: nacos-config
   cloud:
     nacos:
+      discovery:
+        server-addr: 10.255.1.6:8848
       config:
         server-addr: 10.255.1.6:8848
         file-extension: yaml

@@ -14,5 +14,6 @@
         <module>find-cloud-parent</module>
         <module>find-cloud-gateway</module>
         <module>find-cloud-nacos</module>
+        <module>find-cloud-user</module>
     </modules>
 </project>

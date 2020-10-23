@@ -12,7 +12,7 @@
 	<parent>
 		<groupId>find.cloud.parent</groupId>
 		<artifactId>find-cloud-parent</artifactId>
-		<version>Greenwich.SR3.FL</version>
+		<version>Hoxton.SR8</version>
 		<relativePath/>
 	</parent>
 
