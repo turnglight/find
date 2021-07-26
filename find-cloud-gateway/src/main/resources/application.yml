@@ -6,3 +6,9 @@ spring:
     nacos:
       config:
         server-addr: 127.0.0.1:8848
+    gateway:
+      routes:
+        - id: find-cloud-user
+          uri: lb://find-cloud-user
+          predicates:
+            - Path=/find-cloud-user/**

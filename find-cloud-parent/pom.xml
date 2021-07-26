@@ -23,6 +23,9 @@
 		<swagger2.version>2.9.2</swagger2.version>
 		<alibaba.nacos>2.2.6.RELEASE</alibaba.nacos>
 		<springcloud.gateway>2.2.6.RELEASE</springcloud.gateway>
+		<mysql.driven>8.0.26</mysql.driven>
+		<mybatis-plus.version>3.4.3.1</mybatis-plus.version>
+		<lombok.version>1.18.20</lombok.version>
 	</properties>
 
 	<dependencyManagement>
@@ -55,6 +58,24 @@
 				<groupId>com.alibaba.cloud</groupId>
 				<artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
 				<version>${alibaba.nacos}</version>
+			</dependency>
+			<dependency>
+				<groupId>mysql</groupId>
+				<artifactId>mysql-connector-java</artifactId>
+				<version>${mysql.driven}</version>
+			</dependency>
+			<!-- https://mvnrepository.com/artifact/com.baomidou/mybatis-plus-boot-starter -->
+			<dependency>
+				<groupId>com.baomidou</groupId>
+				<artifactId>mybatis-plus-boot-starter</artifactId>
+				<version>${mybatis-plus.version}</version>
+			</dependency>
+			<!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
+			<dependency>
+				<groupId>org.projectlombok</groupId>
+				<artifactId>lombok</artifactId>
+				<version>${lombok.version}</version>
+				<scope>provided</scope>
 			</dependency>
 			<!-- orika -->
 			<dependency>

@@ -8,9 +8,7 @@ import org.springframework.context.ConfigurableApplicationContext;
 @SpringBootApplication
 @EnableDiscoveryClient
 public class FindCloudGatewayApplication {
-
 	public static void main(String[] args) {
 		SpringApplication.run(FindCloudGatewayApplication.class, args);
 	}
-
 }
