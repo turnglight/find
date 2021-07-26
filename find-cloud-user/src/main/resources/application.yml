@@ -4,7 +4,7 @@ spring:
   application:
     name: find-cloud-user
   datasource:
+    driver-class-name: com.mysql.jdbc.Driver
     url: jdbc:mysql://192.168.0.2:3111/zdemo
     username: dbuser
     password: dbpass
-    driver-class-name: com.mysql.jdbc.Driver

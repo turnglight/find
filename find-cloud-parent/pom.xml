@@ -21,7 +21,8 @@
 		<spring-boot.version>2.2.3.RELEASE</spring-boot.version>
 		<spring-cloud.version>Hoxton.SR8</spring-cloud.version>
 		<swagger2.version>2.9.2</swagger2.version>
-		<alibaba.nacos>2.1.3.RELEASE</alibaba.nacos>
+		<alibaba.nacos>2.2.6.RELEASE</alibaba.nacos>
+		<springcloud.gateway>2.2.6.RELEASE</springcloud.gateway>
 	</properties>
 
 	<dependencyManagement>
@@ -39,6 +40,21 @@
 				<version>${spring-cloud.version}</version>
 				<type>pom</type>
 				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-starter-gateway</artifactId>
+				<version>${springcloud.gateway}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.alibaba.cloud</groupId>
+				<artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
+				<version>${alibaba.nacos}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.alibaba.cloud</groupId>
+				<artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
+				<version>${alibaba.nacos}</version>
 			</dependency>
 			<!-- orika -->
 			<dependency>
