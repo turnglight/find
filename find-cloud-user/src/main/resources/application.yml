@@ -17,4 +17,13 @@ spring:
     url: jdbc:mysql://127.0.0.1:3306/voyager
     username: root
     password: 123456
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    lettuce:
+      pool:
+        max-active: 8
+        max-idle: 500
+        max-wait: -1
+    timeout: 0
 
