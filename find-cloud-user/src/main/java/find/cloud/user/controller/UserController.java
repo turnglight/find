@@ -1,20 +1,21 @@
 package find.cloud.user.controller;
 
-import find.cloud.user.controller.vo.UserCreateVo;
-import find.cloud.user.controller.vo.UserQueryVo;
-import find.cloud.user.controller.vo.UserUpdateVo;
-import find.cloud.user.entity.User;
+import find.cloud.type.response.ResponseResult;
+import find.cloud.user.controller.response.UserCreateApiPost;
+import find.cloud.user.controller.response.UserQueryApiGet;
+import find.cloud.user.controller.response.UserUpdateApiPost;
+import find.cloud.user.domain.User;
 import find.cloud.user.service.UserService;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
 
+/**
+ * @author turnglight
+ */
 @RestController
 @RequestMapping("user")
 public class UserController {
@@ -27,9 +28,11 @@ public class UserController {
      * @return
      */
     @GetMapping
-    public ResponseEntity page(@RequestBody @Validated UserQueryVo userQueryVo){
-        Page<User> page = userService.findPage(userQueryVo);
-        return ResponseEntity.ok().body(page);
+    public ResponseResult page(@RequestBody @Validated UserQueryApiGet userQueryApiGet){
+        User user = new User();
+        BeanUtils.copyProperties(userQueryApiGet, user);
+        Page<User> page = userService.findPage(user);
+        return ResponseResult.ok(page);
     }
 
     /**
@@ -37,26 +40,24 @@ public class UserController {
      * @return
      */
     @PostMapping
-    public ResponseEntity create(@RequestBody @Validated UserCreateVo userCreateVo){
-        if(StringUtils.isBlank(userCreateVo.getPhone()) && StringUtils.isBlank(userCreateVo.getWxno())){
-            return ResponseEntity.badRequest().body("参数错误");
+    public ResponseResult create(@RequestBody @Validated UserCreateApiPost userCreateVo){
+        if(userService.isExist(userCreateVo.getWxno(), userCreateVo.getPhone())){
+            return ResponseResult.error("用户已注册");
         }
-        User user = new User();
-        user.setWxno(Optional.of(userCreateVo.getWxno()).get());
-        user.setPhone(Optional.of(userCreateVo.getPhone()).get());
-        return ResponseEntity.ok().body(userService.create(user));
+        User user = new User(userCreateVo.getWxno(), userCreateVo.getPhone());
+        return ResponseResult.ok(userService.create(user));
     }
 
     /**
      * 更新用户信息
-     * @param userUpdateVo
+     * @param userUpdateApiPost
      * @return
      */
     @PutMapping
-    public ResponseEntity update(@RequestBody @Validated UserUpdateVo userUpdateVo){
+    public ResponseResult update(@RequestBody @Validated UserUpdateApiPost userUpdateApiPost){
         User user = new User();
-        BeanUtils.copyProperties(userUpdateVo, user);
-        User newUser = userService.update(user);
-        return ResponseEntity.ok(newUser);
+        BeanUtils.copyProperties(userUpdateApiPost, user);
+        User result = userService.update(user);
+        return ResponseResult.ok(result);
     }
 }

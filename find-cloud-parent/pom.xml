@@ -12,13 +12,13 @@
 
 	<properties>
 		<cloud.version>Hoxton.SR8</cloud.version>
+		<find.version>0.0.1-SNAPSHOT</find.version>
 		<java.version>1.8</java.version>
 		<resource.delimiter>@</resource.delimiter>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<maven.compiler.source>${java.version}</maven.compiler.source>
 		<maven.compiler.target>${java.version}</maven.compiler.target>
-		<spring-boot.version>2.2.3.RELEASE</spring-boot.version>
 		<spring-cloud.version>Hoxton.SR8</spring-cloud.version>
 		<swagger2.version>2.9.2</swagger2.version>
 		<alibaba.nacos>2.2.6.RELEASE</alibaba.nacos>
@@ -26,6 +26,11 @@
 		<mysql.driven>8.0.26</mysql.driven>
 		<mybatis-plus.version>3.4.3.1</mybatis-plus.version>
 		<lombok.version>1.18.20</lombok.version>
+		<springfox.boot.starter.version>3.0.0</springfox.boot.starter.version>
+		<orika.core.version>1.5.4</orika.core.version>
+		<commons.lang3.version>3.12.0</commons.lang3.version>
+		<commons.pool.version>2.11.1</commons.pool.version>
+		<org.mapstruct.version>1.4.2.Final</org.mapstruct.version>
 	</properties>
 
 	<dependencyManagement>
@@ -77,11 +82,43 @@
 				<version>${lombok.version}</version>
 				<scope>provided</scope>
 			</dependency>
+			<dependency>
+				<groupId>io.springfox</groupId>
+				<artifactId>springfox-boot-starter</artifactId>
+				<version>${springfox.boot.starter.version}</version>
+			</dependency>
 			<!-- orika -->
 			<dependency>
 				<groupId>ma.glasnost.orika</groupId>
 				<artifactId>orika-core</artifactId>
-				<version>1.5.4</version>
+				<version>${orika.core.version}</version>
+			</dependency>
+			<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
+			<dependency>
+				<groupId>org.apache.commons</groupId>
+				<artifactId>commons-lang3</artifactId>
+				<version>${commons.lang3.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>find.cloud.type</groupId>
+				<artifactId>find-cloud-type</artifactId>
+				<version>${find.version}</version>
+			</dependency>
+			<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-pool2 -->
+			<dependency>
+				<groupId>org.apache.commons</groupId>
+				<artifactId>commons-pool2</artifactId>
+				<version>${commons.pool.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.mapstruct</groupId>
+				<artifactId>mapstruct</artifactId>
+				<version>${org.mapstruct.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.mapstruct</groupId>
+				<artifactId>mapstruct-processor</artifactId>
+				<version>${org.mapstruct.version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
@@ -92,7 +129,6 @@
 				<plugin>
 					<groupId>org.springframework.boot</groupId>
 					<artifactId>spring-boot-maven-plugin</artifactId>
-					<version>${spring-boot.version}</version>
 					<executions>
 						<execution>
 							<goals>

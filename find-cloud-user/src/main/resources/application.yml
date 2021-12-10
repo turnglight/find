@@ -4,6 +4,10 @@ server:
   servlet:
     context-path: /find-cloud-user
 
+app:
+  server:
+    domain: localhost
+    url: http://${app.server.domain}:${server.port}${server.servlet.context-path}
 
 spring:
   application:
@@ -26,4 +30,11 @@ spring:
         max-idle: 500
         max-wait: -1
     timeout: 0
+
+swagger:
+  enable: true
+  application-name: ${spring.application.name}
+  application-version: 1.0
+  application-description: springfox swagger 3.0
+  try-host: http://${app.server.domain}:${server.port}${server.servlet.context-path}
 

@@ -1,18 +1,44 @@
 package find.cloud.user.repository;
 
-import find.cloud.user.entity.User;
+import find.cloud.user.domain.User;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
 
-/**
- * @author 01407975
- * @description 用户
- * @date 2021/11/29
- */
-public interface UserRepository extends CrudRepository<User, Long> {
+import java.util.Optional;
 
-    @Query(value = "SELECT u FROM t_user u")
-    Page<User> findPage(String name, String nickname, String sno, Integer gender, String phone, String wxno, Integer status, Integer vipState, Integer vipLevel, Pageable pageable);
+public interface UserRepository {
+    /**
+     * 创建用户
+     * @param user
+     * @return
+     */
+    User create(User user);
+
+    /**
+     * 判断是否已经存在对应的用户
+     * @param wxno
+     * @param phone
+     * @return
+     */
+    Boolean isExist(String wxno, String phone);
+
+    /**
+     * 查找指定用户
+     * @param userId
+     * @return
+     */
+    Optional<User> findById(Long userId);
+
+    /**
+     * 保存用户
+     * @param user
+     * @return
+     */
+    User save(User user);
+
+    /**
+     * 分页查询用户
+     * @param user
+     * @return
+     */
+    Page<User> findPage(User user);
 }

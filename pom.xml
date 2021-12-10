@@ -15,5 +15,6 @@
         <module>find-cloud-gateway</module>
         <module>find-cloud-nacos</module>
         <module>find-cloud-user</module>
+        <module>find-cloud-type</module>
     </modules>
 </project>
