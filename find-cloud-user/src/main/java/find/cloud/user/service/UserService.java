@@ -1,9 +1,7 @@
 package find.cloud.user.service;
 
-import find.cloud.user.domain.User;
-import find.cloud.user.domain.UserDetail;
+import find.cloud.user.domain.entity.User;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 
 import java.util.Optional;
 

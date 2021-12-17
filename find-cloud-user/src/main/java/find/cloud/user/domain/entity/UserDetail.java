@@ -1,26 +1,21 @@
-package find.cloud.user.persistence.model;
+package find.cloud.user.domain.entity;
 
-import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 
 /**
- * @description
  * @author turnglight
- * @date  2021-11-30
+ * @description 用户详情
+ * @date 2021/12/9
  */
 @Data
-@TableName(value = "user_detail")
-public class UserDetailModel implements Serializable {
-    private static final long serialVersionUID = -2952735933715107252L;
+public class UserDetail {
     private Long id;
     private Long userId;
+    private String idNumber;
     private String sno;
     private String via;
-    private String idNumber;
     private String photos;
     private String voice;
     private String video;
@@ -41,6 +36,4 @@ public class UserDetailModel implements Serializable {
     private String phone;
     private BigDecimal lng;
     private BigDecimal lat;
-    private LocalDateTime createTime;
-    private LocalDateTime updateTime;
 }

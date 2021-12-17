@@ -1,7 +1,7 @@
 package find.cloud.user.service.impl;
 
-import find.cloud.user.domain.User;
-import find.cloud.user.repository.UserRepository;
+import find.cloud.user.domain.entity.User;
+import find.cloud.user.domain.repository.UserRepository;
 import find.cloud.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

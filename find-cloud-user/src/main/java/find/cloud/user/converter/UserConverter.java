@@ -1,7 +1,6 @@
 package find.cloud.user.converter;
 
-import find.cloud.user.domain.User;
-import find.cloud.user.domain.UserDetail;
+import find.cloud.user.domain.entity.User;
 import find.cloud.user.persistence.model.UserDetailModel;
 import find.cloud.user.persistence.model.UserModel;
 import org.mapstruct.Mapper;
@@ -19,11 +18,6 @@ public interface UserConverter {
 
     UserModel userToUserModel(User user);
 
-    User userModelToUser(UserModel userModel);
-
     UserDetailModel userToUserDetailModel(User user);
 
-    User userDetailModelToUser(UserDetailModel userDetailModel);
-
-    UserDetail userDetailModelToUserDetail(UserDetailModel userDetailModel);
 }

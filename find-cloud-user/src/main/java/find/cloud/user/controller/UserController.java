@@ -1,10 +1,10 @@
 package find.cloud.user.controller;
 
-import find.cloud.type.response.ResponseResult;
+import base.web.response.ResponseResult;
 import find.cloud.user.controller.response.UserCreateApiPost;
 import find.cloud.user.controller.response.UserQueryApiGet;
 import find.cloud.user.controller.response.UserUpdateApiPost;
-import find.cloud.user.domain.User;
+import find.cloud.user.domain.entity.User;
 import find.cloud.user.service.UserService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;

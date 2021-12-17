@@ -3,8 +3,6 @@ package find.cloud.user.persistence.mapper;
 import find.cloud.user.persistence.model.UserDetailModel;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
 
 import java.util.Optional;
 
@@ -13,7 +11,7 @@ import java.util.Optional;
  * @author turnglight
  * @date  2021-11-30
  */
-public interface UserDetailMapper extends CrudRepository<UserDetailModel, Long> {
+public interface UserDetailMapper{
 
     /**
      * 用户分页查询
@@ -29,7 +27,6 @@ public interface UserDetailMapper extends CrudRepository<UserDetailModel, Long> 
      * @param pageable  分页插件
      * @return
      */
-    @Query(value = "SELECT u FROM user_detail u")
     Page<UserDetailModel> findPage(String name, String nickname, String sno, Integer gender, String phone, String wxno, Integer status, Integer vipState, Integer vipLevel, Pageable pageable);
 
     /**

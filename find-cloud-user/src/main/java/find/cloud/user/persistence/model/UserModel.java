@@ -1,17 +1,12 @@
 package find.cloud.user.persistence.model;
 
-import find.cloud.user.type.UserOnlineStatus;
-import find.cloud.user.type.UserStatus;
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+import find.cloud.user.domain.enums.UserOnlineStatus;
+import find.cloud.user.domain.enums.UserStatus;
 import lombok.Data;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.jpa.domain.AbstractPersistable;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
@@ -20,12 +15,10 @@ import java.time.LocalDateTime;
  * @date  2021-11-30
  */
 @Data
-@Entity(name = "user")
-@EntityListeners(AuditingEntityListener.class)
+@TableName(value = "user")
 public class UserModel implements Serializable {
   private static final long serialVersionUID = -2952735933715107252L;
-  @Id
-  @GeneratedValue
+  @TableId(type = IdType.AUTO)
   private Long id;
   private String sno;
   private String name;
@@ -38,9 +31,7 @@ public class UserModel implements Serializable {
   private String phone;
   private String wxno;
   private LocalDateTime lastLoginTime;
-  @CreatedDate
   private LocalDateTime createTime;
-  @LastModifiedDate
   private LocalDateTime updateTime;
 
   public UserModel(){
