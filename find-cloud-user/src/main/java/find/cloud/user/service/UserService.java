@@ -1,7 +1,9 @@
 package find.cloud.user.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import find.cloud.user.domain.entity.User;
-import org.springframework.data.domain.Page;
+import find.cloud.user.domain.entity.UserDetail;
 
 import java.util.Optional;
 
@@ -16,21 +18,21 @@ public interface UserService{
      * @param user
      * @return
      */
-    User create(User user);
+    void create(User user);
 
     /**
      * 更新用户信息
      * @param user
      * @return
      */
-    User update(User user);
+    void update(User user);
 
     /**
      * 分页查询用户信息
      * @param user
      * @return
      */
-    Page<User> findPage(User user);
+    IPage<User> findPage(User user, Page page);
 
     /**
      * 是否已经存在
@@ -46,4 +48,26 @@ public interface UserService{
      * @return
      */
     Optional<User> findById(Long id);
+
+    /**
+     * 更新用户昵称
+     * @param userId
+     * @param name
+     * @param nickName
+     */
+    void updateNicknameAndName(Long userId, String name, String nickName);
+
+    /**
+     * 更新用户详情
+     * @param userDetail
+     */
+    void updateUserDetail(UserDetail userDetail);
+
+    /**
+     * 更新用户密码
+     * @param id
+     * @param oldPasswd
+     * @param newPasswd
+     */
+    void updatePassword(Long id, String oldPasswd, String newPasswd);
 }

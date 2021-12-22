@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-boat.web.autoconfigure.BaseWebAutoConfiguration
+base.web.autoconfigure.BaseWebAutoConfiguration

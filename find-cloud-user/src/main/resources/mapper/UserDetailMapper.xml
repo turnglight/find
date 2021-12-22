@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="find.cloud.user.persistence.mapper.UserDetailMapper">
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="find.cloud.user.persistence.model.UserDetailModel">
+        <id column="id" property="id" />
+        <result column="user_id" property="userId" />
+        <result column="id_number" property="idNumber" />
+        <result column="sno" property="sno" />
+        <result column="via" property="via" />
+        <result column="photos" property="photos" />
+        <result column="voice" property="voice" />
+        <result column="video" property="video" />
+        <result column="signature" property="signature" />
+        <result column="gender" property="gender" />
+        <result column="age" property="age" />
+        <result column="height" property="height" />
+        <result column="weight" property="weight" />
+        <result column="hobby" property="hobby" />
+        <result column="edu" property="edu" />
+        <result column="smoking" property="smoking" />
+        <result column="drink" property="drink" />
+        <result column="region" property="region" />
+        <result column="school" property="school" />
+        <result column="profession" property="profession" />
+        <result column="school_year" property="schoolYear" />
+        <result column="career" property="career" />
+        <result column="phone" property="phone" />
+        <result column="lng" property="lng" />
+        <result column="lat" property="lat" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, user_id, id_number, sno, via, photos, voice, video, signature, gender, age, height, weight, hobby, edu, smoking, drink, region, school, profession, school_year, career, phone, lng, lat, create_time, update_time
+    </sql>
+</mapper>

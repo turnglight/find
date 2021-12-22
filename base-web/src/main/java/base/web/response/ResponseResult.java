@@ -7,9 +7,7 @@ package base.web.response;
  */
 public class ResponseResult {
 
-    private Object object;
-
-    private Integer total;
+    private Object data;
 
     private Integer code;
 
@@ -25,7 +23,7 @@ public class ResponseResult {
 
     public static ResponseResult ok(Object object){
         ResponseResult responseResult = new ResponseResult(HttpStatus.OK.getValue());
-        responseResult.setObject(object);
+        responseResult.setData(object);
         return  responseResult;
     }
 
@@ -43,20 +41,12 @@ public class ResponseResult {
         return new ResponseResult(HttpStatus.UNAUTHORIZED.getValue());
     }
 
-    public Object getObject() {
-        return object;
+    public Object getData() {
+        return data;
     }
 
-    public void setObject(Object object) {
-        this.object = object;
-    }
-
-    public Integer getTotal() {
-        return total;
-    }
-
-    public void setTotal(Integer total) {
-        this.total = total;
+    public void setData(Object object) {
+        this.data = object;
     }
 
     public Integer getCode() {

@@ -1,18 +1,25 @@
 package find.cloud.user.domain.repository.impl;
 
-import find.cloud.user.converter.UserConverter;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import find.cloud.user.domain.entity.User;
+import find.cloud.user.domain.entity.UserDetail;
 import find.cloud.user.persistence.mapper.UserDetailMapper;
 import find.cloud.user.persistence.mapper.UserMapper;
 import find.cloud.user.persistence.model.UserDetailModel;
 import find.cloud.user.persistence.model.UserModel;
 import find.cloud.user.domain.repository.UserRepository;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.Optional;
 
 /**
@@ -30,32 +37,34 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public User create(User user) {
-        UserModel userModel = UserConverter.INSTANCE.userToUserModel(user);
-        UserModel savedUserModel = userMapper.save(userModel);
+    public void create(User user) {
+        UserModel userModel = new UserModel();
+        userModel.setWxno(user.getWxno());
+        userModel.setPhone(user.getPhone());
+        userMapper.insert(userModel);
 
-        UserDetailModel userDetailModel= UserConverter.INSTANCE.userToUserDetailModel(user);
-        UserDetailModel savedDetailModel = userDetailMapper.save(userDetailModel);
-
-        User result = new User();
-        BeanUtils.copyProperties(savedUserModel, result);
-        BeanUtils.copyProperties(savedDetailModel, result);
-        return result;
+        UserDetailModel userDetailModel= generateEmptyUserDetailModel(userModel.getId(), userModel.getPhone());
+        userDetailMapper.insert(userDetailModel);
     }
 
     @Override
     public Boolean isExist(String wxno, String phone) {
-        UserModel existOne = userMapper.findByWxnoOrPhone(wxno, phone);
-        if(existOne != null){
-            return Boolean.TRUE;
-        }
-        return Boolean.FALSE;
+        QueryWrapper<UserModel> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("wxno", wxno).or().eq("phone", phone);
+        return userMapper.selectOne(queryWrapper) == null ? Boolean.FALSE : Boolean.TRUE;
+    }
+
+    @Override
+    public Boolean isExist(Long userId) {
+        return userMapper.selectById(userId) == null ? Boolean.FALSE : Boolean.TRUE;
     }
 
     @Override
     public Optional<User> findById(Long userId) {
-        UserModel userModel = userMapper.findById(userId).get();
-        UserDetailModel userDetailModel = userDetailMapper.findByUserId(userId).get();
+        UserModel userModel = userMapper.selectById(userId);
+        QueryWrapper<UserDetailModel> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("user_id", userId);
+        UserDetailModel userDetailModel = userDetailMapper.selectOne(queryWrapper);
 
         User result = new User();
         BeanUtils.copyProperties(userModel, result);
@@ -63,27 +72,90 @@ public class UserRepositoryImpl implements UserRepository {
         return Optional.of(result);
     }
 
-    @Transactional(rollbackFor = Exception.class)
     @Override
-    public User save(User user) {
-        UserDetailModel userDetailModel = UserConverter.INSTANCE.userToUserDetailModel(user);
-        Optional<UserDetailModel> oldModel = userDetailMapper.findByUserId(user.getId());
-        if(oldModel.isPresent()){
-            UserDetailModel v2 = oldModel.get();
-            userDetailModel.setId(v2.getId());
-            userDetailModel.setLat(v2.getLat());
-            userDetailModel.setLng(v2.getLng());
-            userDetailModel.setSno(v2.getSno());
-            userDetailModel.setUserId(v2.getUserId());
+    public void save(User user) {
+        UserDetailModel userDetailModel = new UserDetailModel();
+        QueryWrapper<UserDetailModel> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("user_id", user.getId());
+        UserDetailModel oldModel = userDetailMapper.selectOne(queryWrapper);
+        if(oldModel != null ){
+            userDetailModel.setId(oldModel.getId());
+            userDetailModel.setLat(oldModel.getLat());
+            userDetailModel.setLng(oldModel.getLng());
+            userDetailModel.setSno(oldModel.getSno());
+            userDetailModel.setUserId(oldModel.getUserId());
         }
-        UserDetailModel v3 = userDetailMapper.save(userDetailModel);
-        User result = new User();
-        BeanUtils.copyProperties(v3, result);
-        return result;
+        userDetailMapper.insert(userDetailModel);
     }
 
     @Override
-    public Page<User> findPage(User user) {
-        return null;
+    public IPage<User> findPage(User user, Page page) {
+        return userMapper.queryPage(page, user);
+    }
+
+    @Override
+    public void updateNicknameAndName(Long userId, String name, String nickName) {
+        UserModel userModel = userMapper.selectById(userId);
+        userModel.setName(name);
+        userModel.setNickname(nickName);
+        userMapper.updateById(userModel);
+    }
+
+    @Override
+    public void updateUserDetail(UserDetail userDetail) {
+        UserDetailModel oldUserDetailModel = userDetailMapper.selectById(userDetail.getId());
+        copyProperties(oldUserDetailModel, userDetail);
+        userDetailMapper.updateById(oldUserDetailModel);
+    }
+
+    private void copyProperties(UserDetailModel model, UserDetail userDetail){
+        model.setWeight(userDetail.getWeight());
+        model.setHeight(userDetail.getHeight());
+        model.setVoice(StringUtils.isNotBlank(userDetail.getVoice())?userDetail.getVoice():"");
+        model.setVideo(StringUtils.isNotBlank(userDetail.getVideo())?userDetail.getVideo():"");
+        model.setVia(StringUtils.isNotBlank(userDetail.getVia())?userDetail.getVia():"");
+        model.setSmoking(userDetail.getSmoking() != null? userDetail.getSmoking() : 0);
+        model.setSignature(StringUtils.isNotBlank(userDetail.getSignature())?userDetail.getSignature():"");
+        model.setSchoolYear(StringUtils.isNotBlank(userDetail.getSchoolYear())?userDetail.getSchoolYear():"");
+        model.setSchool(StringUtils.isNotBlank(userDetail.getSchool())?userDetail.getSchool():"");
+        model.setRegion(StringUtils.isNotBlank(userDetail.getRegion())?userDetail.getRegion():"");
+        model.setProfession(StringUtils.isNotBlank(userDetail.getProfession())?userDetail.getProfession():"");
+        model.setPhotos(StringUtils.isNotBlank(userDetail.getPhotos())?userDetail.getPhotos():"");
+        model.setHobby(StringUtils.isNotBlank(userDetail.getHobby())?userDetail.getHobby():"");
+        model.setEdu(StringUtils.isNotBlank(userDetail.getEdu())?userDetail.getEdu():"");
+        model.setDrink(userDetail.getDrink());
+        model.setCareer(StringUtils.isNotBlank(userDetail.getCareer())?userDetail.getCareer():"");
+        model.setAge(userDetail.getAge());
+    }
+
+    public UserDetailModel generateEmptyUserDetailModel(Long userId, String phone){
+        UserDetailModel userDetailModel = new UserDetailModel();
+        userDetailModel.setUserId(userId);
+        LocalDateTime now = LocalDateTime.now();
+        Instant instant = now.toInstant(ZoneOffset.UTC);
+        userDetailModel.setSno(String.valueOf(instant.getEpochSecond()));
+        userDetailModel.setLng(new BigDecimal(0));
+        userDetailModel.setLat(new BigDecimal(0));
+        userDetailModel.setAge(18);
+        userDetailModel.setCareer("");
+        userDetailModel.setDrink(0);
+        userDetailModel.setEdu("");
+        userDetailModel.setGender(0);
+        userDetailModel.setHeight(160);
+        userDetailModel.setHobby("");
+        userDetailModel.setIdNumber("");
+        userDetailModel.setPhone(phone);
+        userDetailModel.setPhotos("");
+        userDetailModel.setProfession("");
+        userDetailModel.setRegion("");
+        userDetailModel.setSchool("");
+        userDetailModel.setSchoolYear("");
+        userDetailModel.setSignature("");
+        userDetailModel.setSmoking(0);
+        userDetailModel.setVia("");
+        userDetailModel.setVideo("");
+        userDetailModel.setVoice("");
+        userDetailModel.setWeight(40);
+        return userDetailModel;
     }
 }

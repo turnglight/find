@@ -1,6 +1,6 @@
 package find.cloud.user.persistence.model;
 
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -16,6 +16,7 @@ import java.time.LocalDateTime;
 @TableName(value = "user_detail")
 public class UserDetailModel implements Serializable {
     private static final long serialVersionUID = -2952735933715107252L;
+    @TableId(type = IdType.AUTO)
     private Long id;
     private Long userId;
     private String sno;
@@ -41,6 +42,8 @@ public class UserDetailModel implements Serializable {
     private String phone;
     private BigDecimal lng;
     private BigDecimal lat;
+    @TableField(fill = FieldFill.INSERT)
     private LocalDateTime createTime;
+    @TableField(fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime updateTime;
 }

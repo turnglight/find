@@ -38,3 +38,14 @@ swagger:
   application-description: springfox swagger 3.0
   try-host: http://${app.server.domain}:${server.port}${server.servlet.context-path}
 
+mybatis-plus:
+  mapper-locations: classpath*:/mapper/*.xml
+  global-config:
+    banner: false
+    db-config:
+      table-underline: true
+      id-type: auto
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    # 返回类型为Map,显示null对应的字段
+    call-setters-on-nulls: true

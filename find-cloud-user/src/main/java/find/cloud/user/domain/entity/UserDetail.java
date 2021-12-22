@@ -2,6 +2,7 @@ package find.cloud.user.domain.entity;
 
 import lombok.Data;
 
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
 /**
@@ -11,7 +12,9 @@ import java.math.BigDecimal;
  */
 @Data
 public class UserDetail {
+    @NotNull
     private Long id;
+    @NotNull
     private Long userId;
     private String idNumber;
     private String sno;

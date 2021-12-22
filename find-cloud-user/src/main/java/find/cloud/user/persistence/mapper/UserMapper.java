@@ -1,19 +1,24 @@
 package find.cloud.user.persistence.mapper;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import find.cloud.user.domain.entity.User;
 import find.cloud.user.persistence.model.UserModel;
-import org.springframework.data.repository.CrudRepository;
+import org.apache.ibatis.annotations.Select;
 
 /**
  * @author turnglight
  * @description 用户
  * @date 2021/11/29
  */
-public interface UserMapper extends CrudRepository<UserModel, Long> {
+public interface UserMapper extends BaseMapper<UserModel> {
+
     /**
-     * 查找微信号或者手机号码对应的用户
-     * @param wxno
-     * @param phone
+     * 分页查询用户信息
+     * @param page
+     * @param user
      * @return
      */
-    UserModel findByWxnoOrPhone(String wxno, String phone);
+    IPage<User> queryPage(Page page, User user);
 }

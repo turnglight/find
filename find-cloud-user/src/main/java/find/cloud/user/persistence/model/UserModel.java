@@ -1,8 +1,6 @@
 package find.cloud.user.persistence.model;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
 import find.cloud.user.domain.enums.UserOnlineStatus;
 import find.cloud.user.domain.enums.UserStatus;
 import lombok.Data;
@@ -31,7 +29,9 @@ public class UserModel implements Serializable {
   private String phone;
   private String wxno;
   private LocalDateTime lastLoginTime;
+  @TableField(fill = FieldFill.INSERT)
   private LocalDateTime createTime;
+  @TableField(fill = FieldFill.INSERT_UPDATE)
   private LocalDateTime updateTime;
 
   public UserModel(){
@@ -45,6 +45,5 @@ public class UserModel implements Serializable {
     this.onlineStatus = UserOnlineStatus.INITIALIZE.getCode();
     this.phone = "";
     this.wxno = "";
-
   }
 }

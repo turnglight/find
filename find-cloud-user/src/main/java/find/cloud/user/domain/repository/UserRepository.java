@@ -1,7 +1,9 @@
 package find.cloud.user.domain.repository;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import find.cloud.user.domain.entity.User;
-import org.springframework.data.domain.Page;
+import find.cloud.user.domain.entity.UserDetail;
 
 import java.util.Optional;
 
@@ -11,7 +13,7 @@ public interface UserRepository {
      * @param user
      * @return
      */
-    User create(User user);
+    void create(User user);
 
     /**
      * 判断是否已经存在对应的用户
@@ -20,6 +22,13 @@ public interface UserRepository {
      * @return
      */
     Boolean isExist(String wxno, String phone);
+
+    /**
+     * 判断用户是否存在
+     * @param userId
+     * @return
+     */
+    Boolean isExist(Long userId);
 
     /**
      * 查找指定用户
@@ -33,12 +42,27 @@ public interface UserRepository {
      * @param user
      * @return
      */
-    User save(User user);
+    void save(User user);
 
     /**
      * 分页查询用户
      * @param user
+     * @param page
      * @return
      */
-    Page<User> findPage(User user);
+    IPage<User> findPage(User user, Page page);
+
+    /**
+     * 更新用户昵称和用户名称
+     * @param userId
+     * @param name
+     * @param nickName
+     */
+    void updateNicknameAndName(Long userId, String name, String nickName);
+
+    /**
+     * 更新用户详情
+     * @param userDetail
+     */
+    void updateUserDetail(UserDetail userDetail);
 }
