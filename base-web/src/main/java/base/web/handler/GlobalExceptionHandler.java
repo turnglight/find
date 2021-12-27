@@ -1,6 +1,7 @@
 package base.web.handler;
 
-import base.web.response.ResponseResult;
+import base.commons.response.ResponseResult;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -34,7 +35,10 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     @ResponseBody
     ResponseResult handleException(Exception e){
-        LOGGER.error(e.getMessage(), e);
+        if(StringUtils.isNotBlank(e.getMessage())){
+            LOGGER.error(e.getMessage(), e);
+            return ResponseResult.error(e.getMessage());
+        }
         return ResponseResult.error("操作失败");
     }
 }

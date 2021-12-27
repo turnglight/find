@@ -1,13 +1,15 @@
 package find.cloud.user.controller;
 
-import base.web.response.PageResponseResult;
-import base.web.response.ResponseResult;
+import base.commons.response.PageResponseResult;
+import base.commons.response.ResponseResult;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import find.cloud.user.controller.response.*;
+import find.cloud.user.controller.api.*;
+import find.cloud.user.controller.projection.UserLoginProjection;
 import find.cloud.user.domain.entity.User;
 import find.cloud.user.domain.entity.UserDetail;
 import find.cloud.user.service.UserService;
+import org.bouncycastle.openssl.PasswordException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -76,7 +78,7 @@ public class UserController {
      * @return
      */
     @PutMapping(value = "password")
-    public ResponseResult updatePassword(@RequestBody @Validated UserUpdatePasswordApiPut apiPut){
+    public ResponseResult updatePassword(@RequestBody @Validated UserUpdatePasswordApiPut apiPut) throws PasswordException {
         userService.updatePassword(apiPut.getId(), apiPut.getOldPasswd(), apiPut.getNewPasswd());
         return ResponseResult.ok();
     }

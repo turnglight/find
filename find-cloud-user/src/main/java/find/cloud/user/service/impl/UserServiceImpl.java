@@ -7,6 +7,7 @@ import find.cloud.user.domain.entity.User;
 import find.cloud.user.domain.entity.UserDetail;
 import find.cloud.user.domain.repository.UserRepository;
 import find.cloud.user.service.UserService;
+import org.bouncycastle.openssl.PasswordException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -62,16 +63,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void updateUserDetail(UserDetail userDetail) {
-        Boolean isExist = userRepository.isExist(userDetail.getUserId());
-        if(Boolean.FALSE.equals(isExist)){
-            throw new NotExistDataException("用户不存在");
-        }
         userRepository.updateUserDetail(userDetail);
     }
 
     @Override
-    public void updatePassword(Long id, String oldPasswd, String newPasswd) {
-
+    public void updatePassword(Long id, String oldPasswd, String newPasswd) throws PasswordException {
+        userRepository.updatePassword(id, oldPasswd,newPasswd);
     }
-
 }

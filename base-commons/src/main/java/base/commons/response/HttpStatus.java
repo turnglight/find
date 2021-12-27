@@ -1,4 +1,4 @@
-package base.web.response;
+package base.commons.response;
 
 /**
  * @author turnglight

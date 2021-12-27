@@ -1,4 +1,4 @@
-package find.cloud.user.controller.response;
+package find.cloud.user.controller.api;
 
 import lombok.Data;
 

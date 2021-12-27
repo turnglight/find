@@ -1,4 +1,4 @@
-package base.web.response;
+package base.commons.response;
 
 /**
  * @author 01407975
@@ -38,7 +38,9 @@ public class ResponseResult {
     }
 
     public static ResponseResult unauthorized(){
-        return new ResponseResult(HttpStatus.UNAUTHORIZED.getValue());
+        ResponseResult responseResult = new ResponseResult(HttpStatus.UNAUTHORIZED.getValue());
+        responseResult.setError("当前用户无访问权限");
+        return responseResult;
     }
 
     public Object getData() {

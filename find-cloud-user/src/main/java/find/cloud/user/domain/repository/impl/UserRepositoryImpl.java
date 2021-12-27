@@ -11,8 +11,11 @@ import find.cloud.user.persistence.model.UserDetailModel;
 import find.cloud.user.persistence.model.UserModel;
 import find.cloud.user.domain.repository.UserRepository;
 import org.apache.commons.lang3.StringUtils;
+import org.bouncycastle.openssl.PasswordException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -38,9 +41,11 @@ public class UserRepositoryImpl implements UserRepository {
     @Transactional(rollbackFor = Exception.class)
     @Override
     public void create(User user) {
+        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         UserModel userModel = new UserModel();
         userModel.setWxno(user.getWxno());
         userModel.setPhone(user.getPhone());
+        userModel.setPassword(passwordEncoder.encode("888888"));
         userMapper.insert(userModel);
 
         UserDetailModel userDetailModel= generateEmptyUserDetailModel(userModel.getId(), userModel.getPhone());
@@ -106,6 +111,18 @@ public class UserRepositoryImpl implements UserRepository {
         UserDetailModel oldUserDetailModel = userDetailMapper.selectById(userDetail.getId());
         copyProperties(oldUserDetailModel, userDetail);
         userDetailMapper.updateById(oldUserDetailModel);
+    }
+
+    @Override
+    public void updatePassword(Long id, String oldPasswd, String newPasswd) throws PasswordException {
+        PasswordEncoder passwordEncoder  = new BCryptPasswordEncoder();
+        UserModel userModel = userMapper.selectById(id);
+        if(passwordEncoder.matches(oldPasswd, userModel.getPassword())){
+            userModel.setPassword(passwordEncoder.encode(newPasswd));
+            userMapper.updateById(userModel);
+        }else{
+            throw new PasswordException("旧密码错误");
+        }
     }
 
     private void copyProperties(UserDetailModel model, UserDetail userDetail){

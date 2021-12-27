@@ -5,6 +5,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.context.ConfigurableApplicationContext;
 
+/**
+ * @author turnglight
+ */
 @SpringBootApplication
 @EnableDiscoveryClient
 public class FindCloudGatewayApplication {

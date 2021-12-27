@@ -11,6 +11,7 @@
     <description>find project for Spring Boot</description>
 
     <modules>
+        <module>base-commons</module>
         <module>base-web</module>
         <module>find-cloud-parent</module>
         <module>find-cloud-gateway</module>

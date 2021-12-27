@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import find.cloud.user.domain.entity.User;
 import find.cloud.user.domain.entity.UserDetail;
+import org.bouncycastle.openssl.PasswordException;
 
 import java.util.Optional;
 
@@ -69,5 +70,5 @@ public interface UserService{
      * @param oldPasswd
      * @param newPasswd
      */
-    void updatePassword(Long id, String oldPasswd, String newPasswd);
+    void updatePassword(Long id, String oldPasswd, String newPasswd) throws PasswordException;
 }
