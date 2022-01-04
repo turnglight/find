@@ -3,11 +3,15 @@ package find.cloud.gateway.security;
 import find.cloud.gateway.security.impl.ReactiveUserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AbstractUserDetailsReactiveAuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.common.OAuth2AccessToken;
+import org.springframework.security.oauth2.common.exceptions.InvalidTokenException;
+import org.springframework.security.oauth2.provider.OAuth2Authentication;
+import org.springframework.security.oauth2.provider.token.TokenStore;
+import org.springframework.security.oauth2.server.resource.BearerTokenAuthenticationToken;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
@@ -26,41 +30,60 @@ public class AuthenticationManager extends AbstractUserDetailsReactiveAuthentica
     private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     @Autowired
+    private TokenStore tokenStore;
+    @Autowired
     private ReactiveUserDetailsServiceImpl ReactiveUserDetailsService;
-
-
-    public static void main(String[] args) {
-        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        String newPassword = passwordEncoder.encode("123");
-        System.out.println(newPassword);
-    }
 
     @Override
     public Mono<Authentication> authenticate(Authentication authentication) {
-        AuthenticationToken token = (AuthenticationToken) authentication;
-        final String username = authentication.getName();
-        final String presentedPassword = (String) authentication.getCredentials();
-        final String tenant = token.getTenant();
-        final String host = token.getHost();
-        Mono<UserDetails> userDetailsMono = retrieveUser(username);
-        return userDetailsMono.publishOn(scheduler)
-                .filter(u -> passwordEncoder.matches(presentedPassword, u.getPassword()))
-                .switchIfEmpty(Mono.defer(() -> Mono.error(new BadCredentialsException("Invalid Credentials"))))
-                .flatMap(u -> {
-                    boolean upgradeEncoding = ReactiveUserDetailsService != null
-                            && passwordEncoder.upgradeEncoding(u.getPassword());
-                    if (upgradeEncoding) {
-                        String newPassword = passwordEncoder.encode(presentedPassword);
-                        return ReactiveUserDetailsService.updatePassword(u, newPassword);
+        return Mono.justOrEmpty(authentication)
+                .filter(a -> a instanceof BearerTokenAuthenticationToken)
+                .cast(BearerTokenAuthenticationToken.class)
+                .map(BearerTokenAuthenticationToken::getToken)
+                .flatMap((accessToken -> {
+                    OAuth2AccessToken oAuth2AccessToken = this.tokenStore.readAccessToken(accessToken);
+                    if(oAuth2AccessToken == null){
+                        return Mono.error(new InvalidTokenException("无效的token！"));
                     }
-                    return Mono.just(u);
-                })
-                .flatMap(userDetails -> {
-                    // 省略业务代码
-                    return Mono.just(userDetails);
-                })
-                .map(u -> new AuthenticationToken(u, u.getPassword(), u.getAuthorities()));
+                    if(oAuth2AccessToken.isExpired()){
+                        return Mono.error(new InvalidTokenException("token已过期！"));
+                    }
+                    OAuth2Authentication oAuth2Authentication = this.tokenStore.readAuthentication(accessToken);
+                    if(oAuth2AccessToken == null){
+                        return Mono.error(new InvalidTokenException("无效的token！"));
+                    }else{
+                        return Mono.just(oAuth2Authentication);
+                    }
+                })).cast(Authentication.class);
     }
+
+
+//    @Override
+//    public Mono<Authentication> authenticate(Authentication authentication) {
+//        AuthenticationToken token = (AuthenticationToken) authentication;
+//        final String username = authentication.getName();
+//        final String presentedPassword = (String) authentication.getCredentials();
+//        final String tenant = token.getTenant();
+//        final String host = token.getHost();
+//        Mono<UserDetails> userDetailsMono = retrieveUser(username);
+//        return userDetailsMono.publishOn(scheduler)
+//                .filter(u -> passwordEncoder.matches(presentedPassword, u.getPassword()))
+//                .switchIfEmpty(Mono.defer(() -> Mono.error(new BadCredentialsException("Invalid Credentials"))))
+//                .flatMap(u -> {
+//                    boolean upgradeEncoding = ReactiveUserDetailsService != null
+//                            && passwordEncoder.upgradeEncoding(u.getPassword());
+//                    if (upgradeEncoding) {
+//                        String newPassword = passwordEncoder.encode(presentedPassword);
+//                        return ReactiveUserDetailsService.updatePassword(u, newPassword);
+//                    }
+//                    return Mono.just(u);
+//                })
+//                .flatMap(userDetails -> {
+//                    // 省略业务代码
+//                    return Mono.just(userDetails);
+//                })
+//                .map(u -> new AuthenticationToken(u, u.getPassword(), u.getAuthorities()));
+//    }
 
     @Override
     protected Mono<UserDetails> retrieveUser(String username) {

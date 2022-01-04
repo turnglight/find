@@ -19,7 +19,6 @@ spring:
     url: r2dbc:mysql://${spring.r2dbc.host}:${spring.r2dbc.port}/${spring.r2dbc.database}?zeroDate=use_round
     username: root
     password: 123456
-
     pool:
       validation-query: SELECT 1
       enabled: true

@@ -31,7 +31,8 @@ public class AuthorizeConfigManager implements ReactiveAuthorizationManager<Auth
     @Override
     public Mono<AuthorizationDecision> check(Mono<Authentication> authentication,
                                              AuthorizationContext authorizationContext) {
-        return authentication.map(auth -> {
+        return authentication.filter(Authentication::isAuthenticated)
+                .map(auth -> {
             ServerWebExchange exchange = authorizationContext.getExchange();
             ServerHttpRequest request = exchange.getRequest();
 

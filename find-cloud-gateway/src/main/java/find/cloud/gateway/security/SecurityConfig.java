@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.DelegatingReactiveAuthenticationManager;
 import org.springframework.security.authentication.ReactiveAuthenticationManager;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
+import org.springframework.security.config.web.server.SecurityWebFiltersOrder;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.server.SecurityWebFilterChain;
@@ -21,25 +22,14 @@ import java.util.LinkedList;
 @Configuration
 @EnableWebFluxSecurity
 public class SecurityConfig {
-
-    @Autowired
-    private AuthenticationConverter authenticationConverter;
-
     @Autowired
     private AuthorizeConfigManager authorizeConfigManager;
-
     @Autowired
-    private AuthEntryPointException serverAuthenticationEntryPoint;
-
+    private RequestAccessDeniedHandler requestAccessDeniedHandler;
     @Autowired
-    private AuthenticationSuccessHandler authenticationSuccessHandler;
-
-    @Autowired
-    private AuthenticationFailureHandler authenticationFailureHandler;
-
+    private RequestAuthenticationEntryPoint requestAuthenticationEntryPoint;
     @Autowired
     private LogoutSuccessHandler logoutSuccessHandler;
-
     @Autowired
     private AuthenticationManager authenticationManager;
 
@@ -47,36 +37,23 @@ public class SecurityConfig {
 
     @Bean
     public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {
-        SecurityWebFilterChain chain = http.formLogin()
-                .loginPage("/login")
-                // 登录成功handler
-                .authenticationSuccessHandler(authenticationSuccessHandler)
-                // 登陆失败handler
-                .authenticationFailureHandler(authenticationFailureHandler)
-                // 无访问权限handler
-                .authenticationEntryPoint(serverAuthenticationEntryPoint)
-                .and()
-                .logout()
-                // 登出成功handler
-                .logoutSuccessHandler(logoutSuccessHandler)
-                .and()
+         http.httpBasic().disable()
                 .csrf().disable()
-                .httpBasic().disable()
                 .authorizeExchange()
-                // 白名单放行
                 .pathMatchers(AUTH_WHITELIST).permitAll()
                 // 访问权限控制
                 .anyExchange().access(authorizeConfigManager)
-                .and().build();
-        // 设置自定义登录参数转换器
-        chain.getWebFilters()
-                .filter(webFilter -> webFilter instanceof AuthenticationWebFilter)
-                .subscribe(webFilter -> {
-                    AuthenticationWebFilter filter = (AuthenticationWebFilter) webFilter;
-                    //contentType: application/x-www-form-urlencoded
-                    filter.setServerAuthenticationConverter(authenticationConverter);
-                });
-        return chain;
+                .and().exceptionHandling()
+                .accessDeniedHandler(requestAccessDeniedHandler)
+                // 无访问权限handler
+                .authenticationEntryPoint(requestAuthenticationEntryPoint)
+                .and()
+//                .addFilterAt(corsFilter, SecurityWebFiltersOrder.CORS)
+                .addFilterAt(new AuthenticationWebFilter(reactiveAuthenticationManager()), SecurityWebFiltersOrder.AUTHENTICATION)
+                .logout()
+                // 登出成功handler
+                .logoutSuccessHandler(logoutSuccessHandler);
+        return http.build();
     }
 
     /**
