@@ -21,6 +21,12 @@ public class ResponseResult {
         return new ResponseResult(HttpStatus.OK.getValue());
     }
 
+    public static ResponseResult ok( String error){
+        ResponseResult responseResult = new ResponseResult(HttpStatus.OK.getValue());
+        responseResult.setError(error);
+        return  responseResult;
+    }
+
     public static ResponseResult ok(Object object){
         ResponseResult responseResult = new ResponseResult(HttpStatus.OK.getValue());
         responseResult.setData(object);
@@ -34,6 +40,13 @@ public class ResponseResult {
     public static ResponseResult error(String message){
         ResponseResult responseResult = new ResponseResult(HttpStatus.INTERNAL_SERVER_ERROR.getValue());
         responseResult.setError(message);
+        return responseResult;
+    }
+
+
+    public static ResponseResult forbidden(){
+        ResponseResult responseResult = new ResponseResult(HttpStatus.FORBIDDEN.getValue());
+        responseResult.setError("当前用户未授权");
         return responseResult;
     }
 
