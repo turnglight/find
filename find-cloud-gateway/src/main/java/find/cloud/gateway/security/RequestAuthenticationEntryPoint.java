@@ -28,7 +28,7 @@ public class RequestAuthenticationEntryPoint implements ServerAuthenticationEntr
         ServerHttpResponse response = exchange.getResponse();
         response.setStatusCode(HttpStatus.OK);
         response.getHeaders().add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
-        String body = JSONObject.toJSONString(ResponseResult.error("无效的token"));
+        String body = JSONObject.toJSONString(ResponseResult.error("无访问权限"));
         DataBuffer buffer = response.bufferFactory().wrap(body.getBytes(Charset.forName("UTF-8")));
         return response.writeWith(Mono.just(buffer));
     }
