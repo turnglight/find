@@ -33,19 +33,20 @@ public class AuthorizeConfigManager implements ReactiveAuthorizationManager<Auth
                                              AuthorizationContext authorizationContext) {
         return authentication.filter(Authentication::isAuthenticated)
                 .map(auth -> {
-            ServerWebExchange exchange = authorizationContext.getExchange();
-            ServerHttpRequest request = exchange.getRequest();
-
-            Collection<? extends GrantedAuthority> authorities = auth.getAuthorities();
-            for (GrantedAuthority authority : authorities) {
-                String authorityAuthority = authority.getAuthority();
-                String path = request.getURI().getPath();
-                if (antPathMatcher.match(authorityAuthority, path)) {
-                    log.info(String.format("用户请求API校验通过，GrantedAuthority:{%s}  Path:{%s} ", authorityAuthority, path));
+//            ServerWebExchange exchange = authorizationContext.getExchange();
+//            ServerHttpRequest request = exchange.getRequest();
+//
+//            Collection<? extends GrantedAuthority> authorities = auth.getAuthorities();
+//            for (GrantedAuthority authority : authorities) {
+//                String authorityAuthority = authority.getAuthority();
+//                String path = request.getURI().getPath();
+//                if (antPathMatcher.match(authorityAuthority, path)) {
+//                    log.info(String.format("用户请求API校验通过，GrantedAuthority:{%s}  Path:{%s} ", authorityAuthority, path));
+//                    return new AuthorizationDecision(true);
+//                }
+//            }
+//            return new AuthorizationDecision(false);
                     return new AuthorizationDecision(true);
-                }
-            }
-            return new AuthorizationDecision(false);
         }).defaultIfEmpty(new AuthorizationDecision(false));
     }
 

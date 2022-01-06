@@ -1,10 +1,10 @@
 package find.cloud.oauth2.security;
 
 import base.commons.response.ResponseResult;
-import base.commons.utils.ResponseUtils;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.stereotype.Component;
 
@@ -26,6 +26,8 @@ public class LoginAuthenticationFailureHandler implements AuthenticationFailureH
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
         if(exception instanceof BadCredentialsException){
             ResponseUtils.renderJson(response, JSONObject.toJSONString(ResponseResult.ok("用户名或密码不正确")));
+        }else if(exception instanceof UsernameNotFoundException){
+            ResponseUtils.renderJson(response, JSONObject.toJSONString(ResponseResult.ok("用户名不存在")));
         }
         ResponseUtils.renderJson(response, JSONObject.toJSONString(ResponseResult.ok("登录失败")));
     }

@@ -1,15 +1,15 @@
 package find.cloud.oauth2.security;
 
-import base.commons.response.HttpStatus;
 import base.commons.response.ResponseResult;
-import base.commons.utils.ResponseUtils;
 import com.alibaba.fastjson.JSONObject;
 import find.cloud.oauth2.utils.JwtTokenUtil;
-import org.apache.tomcat.util.http.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.provider.token.TokenStore;
+import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
@@ -33,9 +33,9 @@ public class LoginAuthenticationSuccessHandler implements AuthenticationSuccessH
         JSONObject subject = new JSONObject();
         subject.put("username", userDetails.getUsername());
         // 生成令牌
-        String accessToken = JwtTokenUtil.createToken(userDetails.getUsername(), JSONObject.toJSONString(subject), 3600L);
+        String accessToken = JwtTokenUtil.createToken(userDetails.getUsername(), 3600L);
         // 生成刷新令牌，如果accessToken，则通过refreshToken重新获取令牌
-        String refreshToken = JwtTokenUtil.createToken(userDetails.getUsername(), JSONObject.toJSONString(subject), 24 * 3600L);
+        String refreshToken = JwtTokenUtil.createToken(userDetails.getUsername(), 24 * 3600L);
         renderToken(response, new LoginToken(accessToken, refreshToken));
     }
 

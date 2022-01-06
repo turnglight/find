@@ -15,7 +15,7 @@ import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 public class AccessTokenConfig {
 
 
-    private static final String SIGN_KEY = "turnglight_find_20220104";
+    private static final String SIGN_KEY = "jwt_secret_turnglight";
 
     @Bean
     public TokenStore tokenStore() {

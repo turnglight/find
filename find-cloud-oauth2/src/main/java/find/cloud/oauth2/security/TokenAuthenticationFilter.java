@@ -34,9 +34,7 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String token = request.getHeader("authentication");
         if(!StringUtils.isEmpty(token)){
-            String subject = JwtTokenUtil.getProperties(token);
-            JSONObject json = JSONObject.parseObject(subject);
-            String username = json.getString("username");
+            String username = JwtTokenUtil.getUsernameByToken(token);
             if(!StringUtils.isEmpty(username) && SecurityContextHolder.getContext().getAuthentication()==null){
                 UserDetails userDetails = jwtTokenUserDetailsService.loadUserByUsername(username);
                 if(username.equals(userDetails.getUsername())){

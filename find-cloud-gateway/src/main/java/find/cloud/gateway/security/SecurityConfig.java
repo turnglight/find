@@ -9,6 +9,7 @@ import org.springframework.security.config.annotation.web.reactive.EnableWebFlux
 import org.springframework.security.config.web.server.SecurityWebFiltersOrder;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.oauth2.server.resource.web.server.ServerBearerTokenAuthenticationConverter;
 import org.springframework.security.web.server.SecurityWebFilterChain;
 import org.springframework.security.web.server.authentication.AuthenticationWebFilter;
 
@@ -33,15 +34,17 @@ public class SecurityConfig {
     @Autowired
     private AuthenticationManager authenticationManager;
 
-    private static final String[] AUTH_WHITELIST = new String[]{"/login", "/logout"};
+    public static final String[] AUTH_WHITELIST = new String[]{"/find-cloud-oauth2/login", "/logout"};
 
     @Bean
     public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {
+        AuthenticationWebFilter authenticationWebFilter = new AuthenticationWebFilter(authenticationManager);
+        authenticationWebFilter.setServerAuthenticationConverter(new ServerBearerTokenAuthenticationConverter());
          http.httpBasic().disable()
                 .csrf().disable()
                 .authorizeExchange()
                 .pathMatchers(AUTH_WHITELIST).permitAll()
-                // 访问权限控制
+//                // 访问权限控制
                 .anyExchange().access(authorizeConfigManager)
                 .and().exceptionHandling()
                 .accessDeniedHandler(requestAccessDeniedHandler)
@@ -49,32 +52,10 @@ public class SecurityConfig {
                 .authenticationEntryPoint(requestAuthenticationEntryPoint)
                 .and()
 //                .addFilterAt(corsFilter, SecurityWebFiltersOrder.CORS)
-                .addFilterAt(new AuthenticationWebFilter(reactiveAuthenticationManager()), SecurityWebFiltersOrder.AUTHENTICATION)
+                .addFilterAt(authenticationWebFilter, SecurityWebFiltersOrder.AUTHENTICATION)
                 .logout()
                 // 登出成功handler
                 .logoutSuccessHandler(logoutSuccessHandler);
         return http.build();
     }
-
-    /**
-     * 注册用户信息验证管理器，可按需求添加多个按顺序执行
-     * @return
-     */
-    @Bean
-    ReactiveAuthenticationManager reactiveAuthenticationManager() {
-        LinkedList<ReactiveAuthenticationManager> managers = new LinkedList<>();
-        managers.add(authenticationManager);
-        return new DelegatingReactiveAuthenticationManager(managers);
-    }
-
-
-    /**
-     * BCrypt密码编码
-     * @return
-     */
-    @Bean
-    public BCryptPasswordEncoder bcryptPasswordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
 }

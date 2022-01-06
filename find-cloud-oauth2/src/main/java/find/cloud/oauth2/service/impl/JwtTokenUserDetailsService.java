@@ -24,9 +24,6 @@ public class JwtTokenUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         SecurityUser securityUser = loginService.loadByUsername(username);
-        if(Objects.isNull(securityUser)){
-            throw new UsernameNotFoundException("用户不存在");
-        }
         return securityUser;
     }
 }

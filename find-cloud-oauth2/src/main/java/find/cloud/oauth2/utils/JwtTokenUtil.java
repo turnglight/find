@@ -1,8 +1,9 @@
 package find.cloud.oauth2.utils;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import com.alibaba.fastjson.JSONObject;
+import org.springframework.security.jwt.JwtHelper;
+import org.springframework.security.jwt.crypto.sign.MacSigner;
+import org.springframework.security.jwt.crypto.sign.Signer;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
@@ -26,49 +27,12 @@ public class JwtTokenUtil {
      */
     private static final long EXPIRATION = 1800L;
 
-    public static String createToken(String issuer, String subject, long expiration) {
-        return createToken(issuer, subject, expiration, null);
-    }
-
-    /**
-     * 创建 token
-     *
-     * @param issuer     签发人
-     * @param subject    主体,即用户信息的JSON
-     * @param expiration 有效时间(秒)
-     * @param claims     自定义参数
-     * @return
-     * @description
-     */
-    public static String createToken(String issuer, String subject, long expiration, Claims claims) {
-        return Jwts.builder()
-                // JWT_ID：是JWT的唯一标识，根据业务需要，这个可以设置为一个不重复的值，主要用来作为一次性token,从而回避重放攻击。
-//                .setId(id)
-                // 签名算法以及密匙
-                .signWith(SignatureAlgorithm.HS512, SECRET)
-                // 自定义属性
-                .setClaims(null)
-                // 主题：代表这个JWT的主体，即它的所有人，这个是一个json格式的字符串，可以存放什么userid，roldid之类的，作为什么用户的唯一标志。
-                .setSubject(subject)
-                // 受众
-//                .setAudience(loginName)
-                // 签发人
-                .setIssuer(Optional.ofNullable(issuer).orElse(ISS))
-                // 签发时间
-                .setIssuedAt(new Date())
-                // 过期时间
-                .setExpiration(new Date(System.currentTimeMillis() + (expiration > 0 ? expiration : EXPIRATION) * 1000))
-                .compact();
-    }
-
-    /**
-     * 从 token 中获取主题信息
-     *
-     * @param token
-     * @return
-     */
-    public static String getProperties(String token) {
-        return getTokenBody(token).getSubject();
+    public static String createToken(String username, long expiration) {
+        JSONObject json = new JSONObject();
+        json.put("username", username);
+        json.put("expired", System.currentTimeMillis() + 3600 * 1000L);
+        Signer signer = new MacSigner(SECRET);
+        return JwtHelper.encode(JSONObject.toJSONString(json), signer).getEncoded();
     }
 
     /**
@@ -78,19 +42,29 @@ public class JwtTokenUtil {
      * @return
      */
     public static boolean isExpiration(String token) {
-        return getTokenBody(token).getExpiration().before(new Date());
+        String claims = JwtHelper.decode(token).getClaims();
+        JSONObject jsonObject = JSONObject.parseObject(claims);
+        Long expired = jsonObject.getLong("expired");
+        return expired > System.currentTimeMillis();
     }
 
     /**
-     * 获得 token 的 body
+     * 校验是否过期
      *
      * @param token
      * @return
      */
-    private static Claims getTokenBody(String token) {
-        return Jwts.parser()
-                .setSigningKey(SECRET)
-                .parseClaimsJws(token)
-                .getBody();
+    public static String getUsernameByToken(String token) {
+        String claims = JwtHelper.decode(token).getClaims();
+        JSONObject jsonObject = JSONObject.parseObject(claims);
+        return jsonObject.getString("username");
     }
+//
+//    public static void main(String[] args) {
+////        System.out.println(createToken("123", 10L));
+//
+//        String result = JwtHelper.decode("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHBpcmVkIjoxNjQxNDYwNTc5MTU5LCJ1c2VybmFtZSI6IjEyMyJ9.VjSA5PJPeOg2tJO3J-j2rTACYuFmYqwwmhFOIUMoB00").getClaims();
+//        System.out.println(result);
+//    }
+
 }

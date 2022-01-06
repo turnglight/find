@@ -1,7 +1,6 @@
 package find.cloud.oauth2.security;
 
 import base.commons.response.ResponseResult;
-import base.commons.utils.ResponseUtils;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandler;

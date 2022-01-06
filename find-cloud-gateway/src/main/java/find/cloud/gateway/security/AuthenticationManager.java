@@ -1,6 +1,5 @@
 package find.cloud.gateway.security;
 
-import find.cloud.gateway.security.impl.ReactiveUserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AbstractUserDetailsReactiveAuthenticationManager;
 import org.springframework.security.core.Authentication;
@@ -12,6 +11,9 @@ import org.springframework.security.oauth2.common.exceptions.InvalidTokenExcepti
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.server.resource.BearerTokenAuthenticationToken;
+import org.springframework.security.oauth2.server.resource.web.server.ServerBearerTokenAuthenticationConverter;
+import org.springframework.security.web.server.authentication.ServerAuthenticationConverter;
+import org.springframework.security.web.server.authentication.ServerHttpBasicAuthenticationConverter;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
@@ -31,8 +33,8 @@ public class AuthenticationManager extends AbstractUserDetailsReactiveAuthentica
 
     @Autowired
     private TokenStore tokenStore;
-    @Autowired
-    private ReactiveUserDetailsServiceImpl ReactiveUserDetailsService;
+
+    private ServerAuthenticationConverter authenticationConverter = new ServerBearerTokenAuthenticationConverter();
 
     @Override
     public Mono<Authentication> authenticate(Authentication authentication) {
@@ -55,6 +57,11 @@ public class AuthenticationManager extends AbstractUserDetailsReactiveAuthentica
                         return Mono.just(oAuth2Authentication);
                     }
                 })).cast(Authentication.class);
+    }
+
+    @Override
+    protected Mono<UserDetails> retrieveUser(String username) {
+        return null;
     }
 
 
@@ -84,9 +91,4 @@ public class AuthenticationManager extends AbstractUserDetailsReactiveAuthentica
 //                })
 //                .map(u -> new AuthenticationToken(u, u.getPassword(), u.getAuthorities()));
 //    }
-
-    @Override
-    protected Mono<UserDetails> retrieveUser(String username) {
-        return ReactiveUserDetailsService.findByUsername(username);
-    }
 }

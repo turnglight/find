@@ -12,11 +12,13 @@ spring:
           uri: lb://find-cloud-user
           predicates:
             - Path=/find-cloud-user/**
-  r2dbc:
-    host: 127.0.0.1
-    port: 3306
-    database: voyager
-    url: r2dbc:mysql://${spring.r2dbc.host}:${spring.r2dbc.port}/${spring.r2dbc.database}?zeroDate=use_round
+        - id: find-cloud-oauth2
+          uri: lb://find-cloud-oauth2
+          predicates:
+            - Path=/find-cloud-oauth2/**
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/voyager
     username: root
     password: 123456
     pool:
