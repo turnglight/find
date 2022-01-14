@@ -4,18 +4,13 @@ spring:
     name: fing-cloud-gateway
   cloud:
     nacos:
-      config:
+      discovery:
         server-addr: 127.0.0.1:8848
     gateway:
-      routes:
-        - id: find-cloud-user
-          uri: lb://find-cloud-user
-          predicates:
-            - Path=/find-cloud-user/**
-        - id: find-cloud-oauth2
-          uri: lb://find-cloud-oauth2
-          predicates:
-            - Path=/find-cloud-oauth2/**
+      discovery:
+        locator:
+          enabled: true
+
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://127.0.0.1:3306/voyager
@@ -24,3 +19,11 @@ spring:
     pool:
       validation-query: SELECT 1
       enabled: true
+
+oauth2:
+  cloud:
+    sys:
+      parameter:
+        ignoreUrls:
+          - /oauth/token
+          - /oauth/authorize

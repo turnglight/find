@@ -2,14 +2,13 @@ package find.cloud.user.controller;
 
 import base.commons.response.PageResponseResult;
 import base.commons.response.ResponseResult;
+import base.web.exception.PasswordException;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import find.cloud.user.controller.api.*;
-import find.cloud.user.controller.projection.UserLoginProjection;
 import find.cloud.user.domain.entity.User;
 import find.cloud.user.domain.entity.UserDetail;
 import find.cloud.user.service.UserService;
-import org.bouncycastle.openssl.PasswordException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;

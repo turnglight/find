@@ -46,13 +46,19 @@ public class ResponseResult {
 
     public static ResponseResult forbidden(){
         ResponseResult responseResult = new ResponseResult(HttpStatus.FORBIDDEN.getValue());
-        responseResult.setError("当前用户未授权");
+        responseResult.setError("认证失败，禁止访问!");
         return responseResult;
     }
 
     public static ResponseResult unauthorized(){
         ResponseResult responseResult = new ResponseResult(HttpStatus.UNAUTHORIZED.getValue());
-        responseResult.setError("当前用户无访问权限");
+        responseResult.setError("当前用户无访问权限!");
+        return responseResult;
+    }
+
+    public static ResponseResult invalidToken(){
+        ResponseResult responseResult = new ResponseResult(HttpStatus.UNAUTHORIZED.getValue());
+        responseResult.setError("无效的TOKEN!");
         return responseResult;
     }
 

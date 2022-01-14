@@ -12,7 +12,7 @@
 	<parent>
 		<groupId>find.cloud.parent</groupId>
 		<artifactId>find-cloud-parent</artifactId>
-		<version>Hoxton.SR8</version>
+		<version>2021.0.0</version>
 		<relativePath/>
 	</parent>
 

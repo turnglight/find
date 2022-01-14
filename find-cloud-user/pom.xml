@@ -11,7 +11,7 @@
 	<parent>
 		<groupId>find.cloud.parent</groupId>
 		<artifactId>find-cloud-parent</artifactId>
-		<version>Hoxton.SR8</version>
+		<version>2021.0.0</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 
@@ -41,6 +41,11 @@
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
 			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-ui</artifactId>
+			<version>1.6.4</version>
 		</dependency>
 	</dependencies>
 

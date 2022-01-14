@@ -1,13 +1,13 @@
 package find.cloud.user.service.impl;
 
 import base.web.exception.NotExistDataException;
+import base.web.exception.PasswordException;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import find.cloud.user.domain.entity.User;
 import find.cloud.user.domain.entity.UserDetail;
 import find.cloud.user.domain.repository.UserRepository;
 import find.cloud.user.service.UserService;
-import org.bouncycastle.openssl.PasswordException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

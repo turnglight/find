@@ -12,7 +12,7 @@
 	<parent>
 		<groupId>find.cloud.parent</groupId>
 		<artifactId>find-cloud-parent</artifactId>
-		<version>Hoxton.SR8</version>
+		<version>2021.0.0</version>
 		<relativePath/>
 	</parent>
 
@@ -25,6 +25,16 @@
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-gateway</artifactId>
+		</dependency>
+		<!--fegin组件 fhadmin.org-->
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-openfeign</artifactId>
+		</dependency>
+		<!-- Feign Client for loadBalancing -->
+		<dependency>
+			 <groupId>org.springframework.cloud</groupId>
+			 <artifactId>spring-cloud-loadbalancer</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>com.alibaba.cloud</groupId>
@@ -43,16 +53,12 @@
 			<artifactId>spring-cloud-starter-oauth2</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.security</groupId>
-			<artifactId>spring-security-jwt</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>io.jsonwebtoken</groupId>
-			<artifactId>jjwt</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>com.alibaba</groupId>
@@ -63,10 +69,16 @@
 			<artifactId>commons-lang3</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>cn.hutool</groupId>
+			<artifactId>hutool-all</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
 			<scope>provided</scope>
 		</dependency>
+
+
 	</dependencies>
 
 	<build>

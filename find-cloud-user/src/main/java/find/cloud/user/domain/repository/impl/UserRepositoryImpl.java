@@ -1,5 +1,6 @@
 package find.cloud.user.domain.repository.impl;
 
+import base.web.exception.PasswordException;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -11,7 +12,6 @@ import find.cloud.user.persistence.model.UserDetailModel;
 import find.cloud.user.persistence.model.UserModel;
 import find.cloud.user.domain.repository.UserRepository;
 import org.apache.commons.lang3.StringUtils;
-import org.bouncycastle.openssl.PasswordException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;

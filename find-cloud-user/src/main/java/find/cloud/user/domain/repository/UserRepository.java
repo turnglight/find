@@ -1,10 +1,10 @@
 package find.cloud.user.domain.repository;
 
+import base.web.exception.PasswordException;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import find.cloud.user.domain.entity.User;
 import find.cloud.user.domain.entity.UserDetail;
-import org.bouncycastle.openssl.PasswordException;
 
 import java.util.Optional;
 

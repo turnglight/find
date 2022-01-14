@@ -4,14 +4,21 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>find.cloud.parent</groupId>
 	<artifactId>find-cloud-parent</artifactId>
-	<version>Hoxton.SR8</version>
-
+	<version>2021.0.0</version>
 	<packaging>pom</packaging>
+
 	<name>find-cloud-parent</name>
 	<description>find-cloud-parent project for Spring Boot</description>
 
+<!--    springcloud version: 2021.0.0-->
+<!--	Release Train Version: 2021.0.0-->
+<!--	Supported Boot Version: 2.6.1-->
+
 	<properties>
-		<cloud.version>Hoxton.SR8</cloud.version>
+		<spring-cloud.version>2021.0.0</spring-cloud.version>
+		<spring-cloud-starter.version>3.1.0</spring-cloud-starter.version>
+		<spring-boot.version>2.6.1</spring-boot.version>
+		<spring-cloud-security.version>2.2.5.RELEASE</spring-cloud-security.version>
 		<find.version>0.0.1-SNAPSHOT</find.version>
 		<java.version>1.8</java.version>
 		<resource.delimiter>@</resource.delimiter>
@@ -19,12 +26,10 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<maven.compiler.source>${java.version}</maven.compiler.source>
 		<maven.compiler.target>${java.version}</maven.compiler.target>
-		<spring-cloud.version>Hoxton.SR8</spring-cloud.version>
 		<swagger2.version>2.9.2</swagger2.version>
-		<alibaba.nacos>2.2.6.RELEASE</alibaba.nacos>
+		<alibaba.nacos>2021.1</alibaba.nacos>
 		<springcloud.gateway>2.2.6.RELEASE</springcloud.gateway>
 		<mysql.driven>8.0.26</mysql.driven>
-		<mybatis-plus.version>3.4.3.1</mybatis-plus.version>
 		<lombok.version>1.18.20</lombok.version>
 		<springfox.boot.starter.version>3.0.0</springfox.boot.starter.version>
 		<orika.core.version>1.5.4</orika.core.version>
@@ -36,14 +41,16 @@
 		<spring.security.jwt.version>1.1.1.RELEASE</spring.security.jwt.version>
 		<fastjson.version>1.2.79</fastjson.version>
 		<r2dbc.mysql.version>0.8.2.RELEASE</r2dbc.mysql.version>
+		<hutool.version>5.7.17</hutool.version>
+		<lombok.version>1.18.4</lombok.version>
 	</properties>
 
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
 				<groupId>org.springframework.cloud</groupId>
-				<artifactId>spring-cloud-starter-parent</artifactId>
-				<version>${spring-cloud.version}</version>
+				<artifactId>spring-cloud-starter</artifactId>
+				<version>${spring-cloud-starter.version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -51,6 +58,20 @@
 				<groupId>org.springframework.cloud</groupId>
 				<artifactId>spring-cloud-dependencies</artifactId>
 				<version>${spring-cloud.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-dependencies</artifactId>
+				<version>${spring-boot.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-security-dependencies</artifactId>
+				<version>${spring-cloud-security.version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -73,11 +94,6 @@
 				<groupId>com.baomidou</groupId>
 				<artifactId>mybatis-plus-boot-starter</artifactId>
 				<version>${mybatis.plus.boot.starter.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.baomidou</groupId>
-				<artifactId>mybatis-plus-boot-starter</artifactId>
-				<version>${mybatis-plus.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.projectlombok</groupId>
@@ -130,8 +146,26 @@
 				<artifactId>r2dbc-mysql</artifactId>
 				<version>${r2dbc.mysql.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>cn.hutool</groupId>
+				<artifactId>hutool-all</artifactId>
+				<version>${hutool.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.projectlombok</groupId>
+				<artifactId>lombok</artifactId>
+				<version>${lombok.version}</version>
+				<scope>provided</scope>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+		</dependency>
+	</dependencies>
 
 	<build>
 		<pluginManagement>
