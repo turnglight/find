@@ -108,8 +108,6 @@ public class GlobalAuthenticationFilter implements GlobalFilter, Ordered {
             //解析token异常，直接返回token无效
             return invalidTokenMono(exchange);
         }
-
-
     }
 
     @Override

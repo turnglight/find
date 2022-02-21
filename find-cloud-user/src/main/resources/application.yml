@@ -1,4 +1,5 @@
 
+
 server:
   port: 8091
 
@@ -35,3 +36,20 @@ mybatis-plus:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
     # 返回类型为Map,显示null对应的字段
     call-setters-on-nulls: true
+
+
+jiguang:
+  api:
+    appKey: 96af57a8b5ed5954a5e0bd46
+    masterSecret: 13536dad90aafa4c93cec389
+    # 提交loginToken，验证后返回手机号码
+    loginTokenVerifyUrl: https://api.verification.jpush.cn/v1/web/loginTokenVerify
+    # 提交手机号码和token，验证是否一致
+    verifyUrl: https://api.verification.jpush.cn/v1/web/verify
+    # 自定义标识
+    extId: turnglight
+    # RSA私钥
+    privateKey:
+    #RSA公钥
+    publicKey:
+

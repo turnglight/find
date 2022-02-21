@@ -10,6 +10,15 @@ spring:
       discovery:
         locator:
           enabled: true
+      routes:
+        - id: find-cloud-user
+          uri: lb://find-cloud-user
+          predicates:
+            - Path=/find-cloud-user/**
+        - id: find-cloud-oauth2
+          uri: lb://find-cloud-oauth2
+          predicates:
+            - Path=/find-cloud-oauth2/**
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -27,3 +36,4 @@ oauth2:
         ignoreUrls:
           - /oauth/token
           - /oauth/authorize
+          - /find-cloud-user/third/jiguang/verification
