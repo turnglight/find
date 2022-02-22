@@ -5,7 +5,7 @@ spring:
   cloud:
     nacos:
       discovery:
-        server-addr: 127.0.0.1:8848
+        server-addr: 120.26.203.172:8848
     gateway:
       discovery:
         locator:
@@ -22,9 +22,9 @@ spring:
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/voyager
-    username: root
-    password: 123456
+    url: jdbc:mysql://120.26.203.172:3306/voyager
+    username: turnglight
+    password: Dyn900209!@#$
     pool:
       validation-query: SELECT 1
       enabled: true

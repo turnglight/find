@@ -5,6 +5,8 @@
     <groupId>find.cloud.third</groupId>
     <artifactId>find-cloud-third</artifactId>
     <version>0.0.1-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
     <name>find-cloud-third</name>
     <description>find-cloud-third</description>
 
