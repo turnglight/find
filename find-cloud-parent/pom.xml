@@ -29,7 +29,7 @@
 		<swagger2.version>2.9.2</swagger2.version>
 		<alibaba.nacos>2021.1</alibaba.nacos>
 		<springcloud.gateway>2.2.6.RELEASE</springcloud.gateway>
-		<mysql.driven>8.0.26</mysql.driven>
+		<mysql.driven>8.0.28</mysql.driven>
 		<lombok.version>1.18.20</lombok.version>
 		<springfox.boot.starter.version>3.0.0</springfox.boot.starter.version>
 		<orika.core.version>1.5.4</orika.core.version>
@@ -43,6 +43,9 @@
 		<r2dbc.mysql.version>0.8.2.RELEASE</r2dbc.mysql.version>
 		<hutool.version>5.7.17</hutool.version>
 		<lombok.version>1.18.4</lombok.version>
+		<aliyun.tea.openapi.version>0.2.2</aliyun.tea.openapi.version>
+		<aliyun.dysmsapi20170525.version>2.0.9</aliyun.dysmsapi20170525.version>
+		<springdoc.openapi.ui.version>1.6.4</springdoc.openapi.ui.version>
 	</properties>
 
 	<dependencyManagement>
@@ -152,10 +155,19 @@
 				<version>${hutool.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>org.projectlombok</groupId>
-				<artifactId>lombok</artifactId>
-				<version>${lombok.version}</version>
-				<scope>provided</scope>
+				<groupId>com.aliyun</groupId>
+				<artifactId>tea-openapi</artifactId>
+				<version>${aliyun.tea.openapi.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.aliyun</groupId>
+				<artifactId>dysmsapi20170525</artifactId>
+				<version>${aliyun.dysmsapi20170525.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springdoc</groupId>
+				<artifactId>springdoc-openapi-ui</artifactId>
+				<version>${springdoc.openapi.ui.version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>

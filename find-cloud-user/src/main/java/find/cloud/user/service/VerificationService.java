@@ -8,5 +8,5 @@ public interface VerificationService {
      * @param loginToken
      * @return
      */
-    boolean loginTokenVerify(String phone, String loginToken);
+    String loginTokenVerify(String loginToken);
 }
