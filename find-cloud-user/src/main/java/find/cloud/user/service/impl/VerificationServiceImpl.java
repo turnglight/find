@@ -34,15 +34,10 @@ public class VerificationServiceImpl implements VerificationService {
      */
     private static HttpClient httpClient = HttpClient4Utils.createHttpClient(100, 20, 10000, 2000, 2000);
 
-
     @Override
-    public boolean loginTokenVerify(String phone, String loginToken) {
+    public String loginTokenVerify(String loginToken) {
         // 登录TOKEN认证
-        String returnPhone = this.postLoginTokenVerify(loginToken);
-        if(phone.equals(returnPhone)){
-            return true;
-        }
-        return false;
+        return this.postLoginTokenVerify(loginToken);
     }
 
     private String postLoginTokenVerify(String loginToken){

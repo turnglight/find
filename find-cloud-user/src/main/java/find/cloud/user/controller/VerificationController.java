@@ -21,11 +21,7 @@ public class VerificationController {
     @RequestMapping("/verification")
     @PostMapping
     public ResponseResult verification(@RequestBody @Validated VerificationPostApi postApi){
-        boolean success = verificationService.loginTokenVerify(postApi.getPhone(), postApi.getLoginToken());
-        if(success == true){
-            return ResponseResult.ok();
-        }
-        return ResponseResult.error("认证失败");
+        return ResponseResult.ok(verificationService.loginTokenVerify(postApi.getLoginToken()));
     }
 
 }
