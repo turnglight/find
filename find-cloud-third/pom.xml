@@ -2,12 +2,13 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>base.commons</groupId>
-    <artifactId>base-commons</artifactId>
+    <groupId>find.cloud.third</groupId>
+    <artifactId>find-cloud-third</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>base-commons</name>
-    <packaging>jar</packaging>
-    <description>base-commons for Spring Boot</description>
+    <packaging>pom</packaging>
+
+    <name>find-cloud-third</name>
+    <description>find-cloud-third</description>
 
     <parent>
         <groupId>find.cloud.parent</groupId>
@@ -20,11 +21,18 @@
         <java.version>11</java.version>
     </properties>
 
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+    </dependencies>
+
     <build>
         <plugins>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-source-plugin</artifactId>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
         </plugins>
     </build>
@@ -54,4 +62,5 @@
             </snapshots>
         </pluginRepository>
     </pluginRepositories>
+
 </project>

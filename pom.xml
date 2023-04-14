@@ -18,6 +18,7 @@
         <module>find-cloud-nacos</module>
         <module>find-cloud-user</module>
         <module>find-cloud-oauth2</module>
+        <module>find-cloud-third</module>
         <module>find-cloud-generator</module>
     </modules>
 </project>
